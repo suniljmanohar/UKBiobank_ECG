@@ -1,6 +1,7 @@
 # UKBiobank_ECG
 Python 3 code to parse and plot data from ECG XML files from the UK Biobank dataset
-Dr Sunil Manohar (sunil.manohar@cardiov.ox.ac.uk)
+
+Author & contact: Dr Sunil Manohar (sunil.manohar@cardiov.ox.ac.uk)
 
 ## Summary
 This code is extracted from a project for machine learning using ECG data from the UK Biobank and is shared for anyone else wishing to extract data from the XML files.
