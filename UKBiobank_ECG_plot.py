@@ -66,7 +66,7 @@ def plot_long_ecg(lead_data, md, display=False, save_to=''):
     ecg[1] is ECG metadata dict containing 'filename', 'lead order' and 'r waves'. Returns None """
 
     n = lead_data.shape[0]
-    fig = plt.figure(figsize=(20, 12))
+    fig = plt.figure(figsize=(22, 10))
     grid = plt.GridSpec(n//2, 2, hspace=0, wspace=0)
     axs = [None for i in range(n)]
 
@@ -79,9 +79,9 @@ def plot_long_ecg(lead_data, md, display=False, save_to=''):
     meas = 'Heart rate', 'P duration', 'PR interval', 'QRS duration', 'QT interval', 'QTc interval', 'P axis', 'R axis', 'T axis'
     cap1 = '\n'.join(meas)
     cap2 = '\n'.join([md[x] for x in meas])
-    plt.subplots_adjust(left=0.15)
-    plt.gcf().text(0.02, 0.5, cap1, fontsize=10)
-    plt.gcf().text(0.08, 0.5, cap2, fontsize=10)
+    plt.subplots_adjust(left=0.1)
+    plt.gcf().text(0.01, 0.5, cap1, fontsize=10)
+    plt.gcf().text(0.06, 0.5, cap2, fontsize=10)
 
     fig.suptitle(md['filename'])
     if save_to != '': plt.savefig(save_to)
