@@ -99,6 +99,16 @@ def get_metadata(data, md):
     md['low pass'] = float(data['FilterSetting']['LowPass']['#text'])
     md['high pass'] = float(data['FilterSetting']['HighPass']['#text'])
 
+    meas = data['RestingECGMeasurements']
+    md['Heart rate'] = meas['VentricularRate']['#text'] + ' ' + meas['VentricularRate']['@units']
+    md['P duration'] = meas['PDuration']['#text'] + ' ' + meas['PDuration']['@units']
+    md['PR interval'] = meas['PQInterval']['#text'] + ' ' + meas['PQInterval']['@units']
+    md['QRS duration'] = meas['QRSDuration']['#text'] + ' ' + meas['QRSDuration']['@units']
+    md['QT interval'] = meas['QTInterval']['#text'] + ' ' + meas['QTInterval']['@units']
+    md['QTc interval'] = meas['QTCInterval']['#text'] + ' ' + meas['QTCInterval']['@units']
+    md['P axis'] = meas['PAxis']['#text'] + ' ' + meas['PAxis']['@units']
+    md['R axis'] = meas['RAxis']['#text'] + ' ' + meas['RAxis']['@units']
+    md['T axis'] = meas['TAxis']['#text'] + ' ' + meas['TAxis']['@units']
     return md
 
 

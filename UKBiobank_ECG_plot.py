@@ -33,7 +33,7 @@ def format_ecg_plot(graph, v_rescale=1, t_rescale=1, grids=True, minor_ticks=Tru
     graph.set_axisbelow(True)
 
 
-def plot_iso_ecg(iso_leads, metadata, save_to='', display=False):
+def plot_iso_ecg(iso_leads, md, save_to='', display=False):
     """ plots 12 isolated complexes in conventional ECG layout, no rhythm strip"""
     fig = plt.figure(figsize=(20, 20))
     grid = plt.GridSpec(3, 4, wspace=0)
@@ -45,30 +45,45 @@ def plot_iso_ecg(iso_leads, metadata, save_to='', display=False):
             else:
                 axs[x][y] = fig.add_subplot(grid[x, y])
             axs[x][y].plot(iso_leads[x + 3 * y], 'k-')
-            axs[x][y].set_title(metadata['lead order'][x + 3 * y])
+            axs[x][y].set_title(md['lead order'][x + 3 * y])
             format_ecg_plot(axs[x][y])
-    plt.suptitle(metadata['filename'], horizontalalignment='left', x=0, fontsize=30, fontname='monospace')
+    plt.suptitle(md['filename'], horizontalalignment='left', x=0, fontsize=30, fontname='monospace')
+
+    meas = 'Heart rate', 'P duration', 'PR interval', 'QRS duration', 'QT interval', 'QTc interval', 'P axis', 'R axis', 'T axis'
+    cap1 = '\n'.join(meas)
+    cap2 = '\n'.join([md[x] for x in meas])
+    plt.subplots_adjust(left=0.2)
+    plt.gcf().text(0.02, 0.5, cap1, fontsize=12)
+    plt.gcf().text(0.12, 0.5, cap2, fontsize=12)
+
     if save_to != '': plt.savefig(save_to + ' median.svg')
     if display: plt.show()
     plt.close()
 
 
-def plot_long_ecg(lead_data, metadata, display=False, save_to=''):
+def plot_long_ecg(lead_data, md, display=False, save_to=''):
     """ plots 12 long ECG leads vertically ordered. ecg[0] is np array of shape (n_leads, lead_length) with ECG waveforms.
     ecg[1] is ECG metadata dict containing 'filename', 'lead order' and 'r waves'. Returns None """
 
     n = lead_data.shape[0]
-    fig = plt.figure(figsize=(20, 14))
-    grid = plt.GridSpec(n, 1, hspace=0, wspace=0)
+    fig = plt.figure(figsize=(20, 12))
+    grid = plt.GridSpec(n//2, 2, hspace=0, wspace=0)
     axs = [None for i in range(n)]
 
     for i in range(n):
-        axs[i] = fig.add_subplot(grid[i, 0])
-        axs[i].plot(lead_data[i], 'k-')
-        axs[i].set_title(metadata['lead order'][i])
+        axs[i] = fig.add_subplot(grid[i%6, i//6])
+        axs[i].plot(lead_data[i], 'k-', linewidth=0.7)
+        axs[i].set_title(md['lead order'][i])
         format_ecg_plot(axs[i])
 
-    fig.suptitle(metadata['filename'])
+    meas = 'Heart rate', 'P duration', 'PR interval', 'QRS duration', 'QT interval', 'QTc interval', 'P axis', 'R axis', 'T axis'
+    cap1 = '\n'.join(meas)
+    cap2 = '\n'.join([md[x] for x in meas])
+    plt.subplots_adjust(left=0.15)
+    plt.gcf().text(0.02, 0.5, cap1, fontsize=10)
+    plt.gcf().text(0.08, 0.5, cap2, fontsize=10)
+
+    fig.suptitle(md['filename'])
     if save_to != '': plt.savefig(save_to)
     if display: plt.show()
     plt.close()
